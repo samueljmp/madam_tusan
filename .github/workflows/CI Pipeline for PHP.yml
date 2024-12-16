@@ -1,0 +1,90 @@
+name: CI Pipeline for PHP
+
+# Definir los eventos que disparan el flujo de trabajo
+on:
+  push:
+    branches:
+      - main  # Ejecutar en la rama principal
+  pull_request:
+    branches:
+      - main  # Ejecutar cuando se haga un PR hacia la rama principal
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Ejecutar en un entorno Ubuntu más reciente
+
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Acción para clonar el repositorio
+
+    
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2  # Cache de las dependencias de PHP
+        with:
+          path: vendor  # Carpeta de dependencias generadas por Composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}  # Usar el archivo composer.lock para cache
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2  # Acción para configurar PHP
+        with:
+          php-version: '8.1'  # Establecer la versión de PHP que se utilizará
+          extensions: mbstring, bcmath  # Extensiones de PHP que podrían ser necesarias
+          coverage: xdebug  # Configurar xdebug para cobertura de pruebas
+
+     
+      - name: Install dependencies with Composer
+        run: |
+          composer install --prefer-dist --no-interaction  # Instalar dependencias de PHP
+
+     
+      - name: Run PHPUnit tests
+        run: |
+          vendor/bin/phpunit --configuration phpunit.xml --coverage-text  # Ejecutar pruebas unitarias con PHPUnit
+
+   
+      - name: Run PHPStan
+        run: |
+          vendor/bin/phpstan analyse src --level=max  # Ejecutar análisis estático con PHPStan
+
+      
+      - name: Run PHP_CodeSniffer
+        run: |
+          vendor/bin/phpcs --standard=PSR12 src  # Ejecutar el análisis de estilo de código
+
+      
+      - name: Run Composer audit
+        run: |
+          composer audit  # Ejecutar auditoría de seguridad de dependencias de Composer
+
+    
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2  # Acción para subir artefactos (si es necesario)
+        with:
+          name: build-artifact
+          path: build/  # Ruta del directorio de construcción (ajusta según tu proyecto)
+
+    
+      - name: Notify Slack
+        uses: peter-evans/slack-notify@v2  # Acción para enviar notificaciones a Slack
+        with:
+          status: ${{ job.status }}  # El estado del trabajo (success, failure, etc.)
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}  # URL del webhook de Slack (configurado en secretos)
+
+  deploy:
+    runs-on: ubuntu-latest  # Ejecutar en un entorno Ubuntu más reciente
+    needs: build  # Este trabajo depende de que el trabajo 'build' se haya completado con éxito
+
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Acción para clonar el repositorio
+
+     
+      - name: Deploy to production
+        run: |
+          echo "Desplegando en el servidor de producción..."
+          # Aquí irían los comandos para el despliegue real (por ejemplo, SCP, SSH, Heroku CLI, etc.)
