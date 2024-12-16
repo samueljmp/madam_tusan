@@ -1,0 +1,131 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    background-image: url('images/dragon-pattern.jpg'); /* Asegúrate de que el nombre del archivo y la ruta sean correctos */
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    background-color: #FF5733;
+    color: white;
+    padding: 1em;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+main {
+    padding: 2em;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    margin: 2em;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.menu-section {
+    margin-bottom: 3em;
+    padding: 2em;
+    background-color: #FFFAF0;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.menu-section h2 {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 2.5em;
+    color: #FF5733;
+    position: relative;
+}
+
+.menu-section h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: #FF5733;
+    margin: 0.5em auto 0;
+}
+
+.dish {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 1em;
+    padding: 1em;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #ddd;
+}
+
+.dish img {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-right: 1em;
+    display: block;
+}
+
+.dish-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dish h3 {
+    margin-top: 0;
+    font-size: 1.6em;
+    color: #FF5733;
+}
+
+.dish p {
+    margin: 0.5em 0;
+}
+
+.dish span {
+    font-weight: bold;
+}
+
+.dish:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.extra-info {
+    padding: 2em;
+    background-color: #FFFAF0;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.extra-info h2 {
+    text-align: center;
+    font-size: 2.5em;
+    color: #FF5733;
+    position: relative;
+}
+
+.extra-info h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: #FF5733;
+    margin: 0.5em auto 0;
+}
+
+.extra-info p {
+    margin: 1em 0;
+}
+
+.extra-info span {
+    font-weight: bold;
+}
